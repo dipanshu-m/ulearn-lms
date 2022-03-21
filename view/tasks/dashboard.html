@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="title"
+        href="https://firebasestorage.googleapis.com/v0/b/ulearn-lms-fe316.appspot.com/o/logo.png?alt=media&token=17f4c56f-950f-4baa-963c-68177adf9bb2"
+        type="image/icon type" />
+    <link rel="stylesheet" href="../styles.css" type="text/css" />
+
+    <title>ULearn Dashboard</title>
+</head>
+
+<style>
+    li {
+        margin-top: 1em;
+    }
+
+    input {
+        width: 60%;
+    }
+
+    .edit {
+        cursor: default;
+    }
+
+    .edit:hover {
+        text-decoration: underline;
+    }
+</style>
+
+<body>
+    <header>
+        <button class="no-border no-background title noselect" onclick="backToTop()">
+            <h1>ULearn</h1>
+        </button>
+
+        <span class="container">
+            <img src="../static/outline_menu_black_24dp.png" alt="menu" class="menu" onclick="showMenu()">
+            <span class="full-auth">
+                <button class="btn-large sign-out full-auth">
+                    <h3 onclick="logout()">Log Out</h3>
+                </button>
+                <button class="btn-large delete-account full-auth">
+                    <h3>Delete Account</h3>
+                </button>
+            </span>
+        </span>
+    </header>
+    <main>
+        <div class="toggle hide">
+            <button class="btn-large sign-out no-border">
+                <h3>Log Out</h3>
+            </button>
+            <button class="btn-large delete-account no-border">
+                <h3>Delete Account</h3>
+            </button>
+        </div>
+        <div class="container flex space-between">
+            <span>
+                <img src="" alt="" class="imgpfp">
+                <h3 class="edit">Edit</h3>
+            </span>
+            <div class="" style="width: 60%;">
+                <h1>
+                    dba dnajk
+                </h1>
+                <h3>
+                    nbvchfxgjhk@Jw.com
+                </h3>
+            </div>
+        </div>
+        <div class="container">
+            <h1>Account</h1>
+            <ul>
+                <li class="flex space-between">
+
+                    <p>Full name
+                    </p>
+                    <input type="text" name="" id="">
+                    <!-- input text -->
+                </li>
+                <li class="flex space-between">
+
+                    <p>Username</p>
+                    <input type="text" name="" id="" required>
+                    <!-- input text -->
+                </li>
+                <li class="flex space-between">
+
+                    <p>Email</p>
+                    <input type="email" name="" id="" required>
+                    <!-- input text -->
+                </li>
+                <li class="flex space-between">
+
+                    <p>Password</p>
+                    <input type="password" name="" id="" required>
+                    <!-- input text -->
+                </li>
+            </ul>
+            <button class="btn-large" type="submit">
+                <h3>Save</h3>
+            </button>
+        </div>
+    </main>
+    <div class="paddingforfooter"></div>
+    <footer>
+        <div class="full-container ">
+            <div class="container red">
+                <div class="row1">
+                    <a href="https://github.com/dipanshu-m" target="_blank">
+                        <p>Github Repository</p>
+                    </a>
+                    <a href="mailto:d1p@duck.com">
+                        <p>Contact</p>
+                    </a>
+                </div>
+                <div class="rightbottom">
+                    <p>
+                        Made with &#10084;&#65039; by Dipanshu
+                    </p>
+                    <p>
+                        ULearn &copy; 2022
+                    </p>
+
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+<script>
+    function backToTop() {
+        window.scrollTo(0, 0);
+    }
+
+    function logout() {
+        window.location.href = '/logout';
+    }
+
+
+    fetch('/userinfo')
+        .then(response => response.text())
+        .then(data => console.log(data));
+
+    //
+</script>
+
+
+</html>
