@@ -2,6 +2,7 @@ const User = require('../models/User');
 require('dotenv').config();
 const path = require('path');
 const JWT = require('jsonwebtoken');
+const { db } = require('../models/User');
 
 
 
@@ -58,7 +59,7 @@ const createToken = (id) => {
 };
 
 module.exports.signup_get = (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../view/signup.html'))
+    res.sendFile(path.resolve(__dirname, '../views/signup.html'))
 }
 
 module.exports.signup_post = async (req, res) => {
@@ -85,7 +86,7 @@ module.exports.signup_post = async (req, res) => {
 
 
 module.exports.login_get = (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../view/login.html'))
+    res.sendFile(path.resolve(__dirname, '../views/login.html'))
 }
 
 module.exports.login_post = async (req, res) => {
@@ -108,7 +109,7 @@ module.exports.logout_get = (req, res) => {
 
 
 module.exports.img_get = (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../view/getimg.html'))
+    res.sendFile(path.resolve(__dirname, '../views/getimg.html'))
 }
 
 module.exports.img_post = (req, res) => {
@@ -147,4 +148,49 @@ module.exports.img_post = (req, res) => {
     else {
         res.send('Bad request. Error');
     }
+}
+
+module.exports.dashboard_put = (req, res) => {
+    const { image, fullname, email, username, password } = req.body;
+    // console.log(image, fullname, email, username, password);
+    const token = req.cookies.auth;
+
+    User.find()
+        .then((result) => {
+            result.forEach((user) => {
+                User.findByIdAndUpdate(
+                    idname, { username, fullname, email, image, password: "hello" },
+                    async (err, doc) => {
+                        console.log("err: ", err);
+                        console.log("doc: ", doc);
+                        try {
+                            if (err) {
+                                console.log("ERRORS IDK ");
+                            };
+                            doc.username = username;
+                            doc.fullname = fullname;
+                            doc.email = email;
+                            if (doc.password != '')
+                            doc.password = password;
+                            doc.image = image;
+
+                            console.log("presave");
+                            const usernew = await doc.save();
+                            console.log("postsave", usernew + "\n\n");
+
+                            if (token)
+                            res.json(usernew);
+                        }
+                        catch (e) {
+                            console.log("pre-error", e);
+                            const errors = errHandle(e);
+                            console.log("posterrors", errors + "\n\n");
+                            // console.log(errors.username == '', errors.password == '', errors.email == '');
+
+                            return res.status(400).send({ errors });
+                        }
+                    }
+                )
+            });
+        })
 }

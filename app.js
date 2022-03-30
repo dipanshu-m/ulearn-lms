@@ -4,13 +4,14 @@ const mongoose = require('mongoose');
 const express = require('express');
 const app = express();
 const authRoutes = require('./routes/authRoutes');
+const taskRoutes = require('./routes/taskRoutes');
 const { requireAuth, checkUser } = require('./middleware/authMiddleware');
 const cookieParser = require('cookie-parser');
 
 // app.use(express.urlencoded({ extended: false }))
 app.use(express.json());
 app.use(cookieParser()); // Note the `()`
-app.use(express.static('./view'));
+app.use(express.static('./views'));
 app.use(express.static('./uploads/'));
 
 // connect to database
@@ -32,29 +33,28 @@ mongoose.connect(dbURI, { useNewUrlParser: true, useUnifiedTopology: true })
 app.get('*', checkUser);
 app.get('/', (req, res) => {
     console.log("homepage");
-    res.sendFile(path.resolve(__dirname, './view/index.html'))
+    res.sendFile(path.resolve(__dirname, './views/index.html'))
 
 });
 app.use(authRoutes);
+app.set("view engine", "ejs");
+app.use('/task',taskRoutes);
 
 app.get('/dashboard', requireAuth, (req, res) => {
-    console.log(res.locals.user.fullname);
-    // res.json({
-    //     image: res.locals.user.image,
-    //     fullname: res.locals.user.fullname,
-    //     username: res.locals.user.username,
-    //     email: res.locals.user.image,
-    //     password: res.locals.user.image
-    // })
-    res.sendFile(path.resolve(__dirname, './view/tasks/dashboard.html'))
+
+    // console.log("id="+res.locals.user._id);
+    res.render('./tasks/dashboard.ejs', {
+        image: res.locals.user.image,
+        fullname: res.locals.user.fullname,
+        username: res.locals.user.username,
+        email: res.locals.user.image,
+        password: res.locals.user.image
+    })
 })
+
+// app.get('userinfo', requireAuth, (req, res)=> {
+//     res.json()
+// })
 app.get('/tasks', requireAuth, (req, res) => {
-    res.sendFile(path.resolve(__dirname, './view/tasks/tasks.html'))
+    res.render('./tasks/tasks')
 });
-
-
-// app.get('/tasks:step',
-// });
-// app.get('/tasks', requireAuth, (req, res) => {
-//     res.redirect('/tasks')
-// });

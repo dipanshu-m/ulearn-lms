@@ -14,4 +14,6 @@ router.get('/logout', authcontroller.logout_get);
 
 router.get('/signup/img', authcontroller.img_get);
 router.post('/signup/img', authcontroller.img_post);
+
+router.put('/dashboard', authcontroller.dashboard_put);
 module.exports = router;

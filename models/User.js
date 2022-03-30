@@ -38,13 +38,26 @@ const userSchema = new mongoose.Schema({
 });
 
 //fire a function before a user is saved to db
-userSchema.pre('save', async function (next) {
+userSchema.pre(['save', 'updateOne', 'update'], async function (next) {
     const salt = await bcrypt.genSalt();
-    // console.log(salt);
+    console.log("salt: ", salt);
+    console.log("pass: ", this.password);
     this.password = await bcrypt.hash(this.password, salt);
-    // console.log(this.password);
+    console.log('password:' ,this.password);
     next();
 })
+// 
+
+
+// userSchema.pre('updateOne', async function (next) {
+//     // console.log(this.password);
+//     console.log("preupdate");
+//     const salt = await bcrypt.genSalt();
+//     // console.log(salt);
+//     this.password = await bcrypt.hash(this.password, salt);
+//     console.log("postsave\n\n\n");
+//     next();
+// })
 
 //static method to login user
 userSchema.statics.login = async function (email, password) {
