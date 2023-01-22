@@ -13,6 +13,8 @@ app.use(express.json());
 app.use(cookieParser()); // Note the `()`
 app.use(express.static('./views'));
 app.use(express.static('./uploads/'));
+const port = process.env.PORT || 5000;
+app.set('path', port);
 
 // connect to database
 username = process.env.DB_UNAME;
@@ -29,10 +31,9 @@ const options = {
   dbName: 'Users',
 };
 mongoose.set('strictQuery', true);
-mongoose.connect(dbURI, options ).then(() => {
+mongoose.connect(dbURI, options).then(() => {
   console.log('connected to db');
-  const port = process.env.PORT || 5000;
-  app.listen(port, () => {
+  app.listen(app.get('path'), () => {
     console.log(`Listening on http://localhost:${port}/`);
   });
 });
